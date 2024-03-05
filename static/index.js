@@ -1,23 +1,26 @@
 function connectOnClick(){
+    if (typeof Paho !== 'undefined') {
+    clientId= parseInt(Math.random() * 100);
 
-    clientId="ClientID: " + parseInt(Math.random() * 100);
+    const host = document.getElementById("host").value;
+    const port = document.getElementById("port").value;
+    const usernameId = document.getElementById( "username" ).value;
+    const passwordId = document.getElementById("password").value;
 
-    host = document.getElementById("host").value;
-    port = document.getElementById("port").value;
-    usernameId = document.getElementById( "username" ).value;
-    passwordId = document.getElementById("password").value;
+    document.getElementById("messages").innerHTML += "<span> Connecting to: " + host  +" on port: " + port + " ... </span> <br>"
+    document.getElementById("messages").innerHTML += "<span> ClientID: " + + clientId  +" ... </span> <br>"
 
-    document.getElementById("messages").innerHTML += "<span> Connecting to: " + host  +" on port: " + port + " ... </span><br>"
-    document.getElementById("messages").innerHTML += "<span>" + clientId  +" ... </span><br>"
-
-    client= new Paho.MQTT.Client(host,Number(port),clientId);
+    client= new Paho.MQTT.Client(host,port,clientId);
     client.onConnectionLost = onConnectionLost; 
     client.onMessageArrived = onMessageArrived; 
 
     client.connect({
-        onSucces : onConnect
+        onSuccess : onConnect
     });
-
+    }
+    else{
+        console.error("Paho MQTT library not loaded.");
+    }
 };
 
 function onConnect(){
@@ -41,9 +44,21 @@ function onMessageArrived(message){
 };
 
 function disconnectOnClick(){
-
+    if (client.isConnected()) {
+        client.disconnect();
+        document.getElementById("messages").innerHTML += "<span> Disconnected successfully</span><br>";
+    } else {
+        document.getElementById("messages").innerHTML += "<span> Client is not connected</span><br>";
+    }
 };
 
 function  publishOcClick() {
+    topic = document.getElementById("topc_p").value;
 
+    if (client.isConnected()) {
+        client.publish(topic, message);
+        document.getElementById("messages").innerHTML += "<span> Published to Topic: " + topic + " | Message: " + message + "</span><br>";
+    } else {
+        document.getElementById("messages").innerHTML += "<span> Client is not connected</span><br>";
+    }
 };
