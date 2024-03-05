@@ -1,26 +1,20 @@
 function connectOnClick(){
-    if (typeof Paho !== 'undefined') {
-    clientId= parseInt(Math.random() * 100);
+    
+    const clientId= 'mqttjs_' +parseInt(Math.random() * 100);
 
-    const host = document.getElementById("host").value;
-    const port = document.getElementById("port").value;
-    const usernameId = document.getElementById( "username" ).value;
-    const passwordId = document.getElementById("password").value;
 
-    document.getElementById("messages").innerHTML += "<span> Connecting to: " + host  +" on port: " + port + " ... </span> <br>"
-    document.getElementById("messages").innerHTML += "<span> ClientID: " + + clientId  +" ... </span> <br>"
+    const host=document.getElementById("host").value;
+    const port=document.getElementById("port").value;
+    const username=document.getElementById("username").value;
+    const password=document.getElementById("password").value;
 
-    client= new Paho.MQTT.Client(host,port,clientId);
-    client.onConnectionLost = onConnectionLost; 
-    client.onMessageArrived = onMessageArrived; 
+    const client= mqtt.Client(
+        [
+            { 
+                host: host,
+                port: port, 
+                clientId: clientId }] );
 
-    client.connect({
-        onSuccess : onConnect
-    });
-    }
-    else{
-        console.error("Paho MQTT library not loaded.");
-    }
 };
 
 function onConnect(){
@@ -52,7 +46,7 @@ function disconnectOnClick(){
     }
 };
 
-function  publishOcClick() {
+function  publishOnClick() {
     topic = document.getElementById("topc_p").value;
 
     if (client.isConnected()) {
