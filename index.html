@@ -13,14 +13,14 @@
     <form id="connection-information-form">
       <b>Hostname or Ip adress and Port Number</b> <br>
       <input id="host" name="host" type="text" value="test.mosquitto.org" placeholder="broker adress"> <br>
-      <input id="port" name="port" type="number" value="8080" placeholder="Port Number"> <br>
+      <input id="port" name="port" type="number" value="8081" placeholder="Port Number"> <br>
 
       <b>Username and Password</b> <br>
       <input id="username" name="username" type="text" value="" placeholder="Username"> <br>
       <input id="password" name="password" type="password" value="" placeholder="Password"> <br>
 
       <b>Subscribtion Topic</b> <br>
-      <input id="topc_s" name="topc_s" type="text" value="#" placeholder="Topic for Subscribtion"> <br>
+      <input id="topic_s" name="topic_s" type="text" value="#" placeholder="Topic for Subscribtion"> <br>
 
       <input type="button" onclick="connectOnClick()" value="Connect"> <br>
       <input type="button" onclick="disconnectOnClick()" value="Disconnect"> <br>
@@ -32,7 +32,7 @@
       <input type="button" onclick="publishOnClick()" value="Publish Message"> <br>
 
     </form>
-    <div id="messages"></div>
+    <div id="output"></div>
   </div>
 
 </body>

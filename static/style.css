@@ -43,7 +43,7 @@ input[type=password] {
     text-align: center;
 }
 
-#messages{
+#output{
     margin-top: 12px;
     margin-bottom: 12px;
     padding: 12px;
@@ -55,7 +55,7 @@ input[type=password] {
     overflow: scroll;
 }
 
-#messages span{
+#output span{
     overflow-y: scroll;
     overflow: scroll;
 }
