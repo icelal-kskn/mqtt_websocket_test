@@ -8,7 +8,7 @@ function connectOnClick() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    if (!host.startsWith('wss://')) {
+    if (!host.startsWith('wss://') && (port== 8081 ||port==8091)) {
         host = 'wss://' + host;
     }
 
@@ -20,10 +20,12 @@ function connectOnClick() {
 
     document.getElementById("output").innerHTML += "<span>Connecting the client: " + host + " ... </span><br>";
     document.getElementById("output").innerHTML += "<span>On Port:" + port + " ... </span><br>";
+    console.log(client)
     
     client.on('connect', onConnect);
     client.on('error', onConnectError);
     client.on('close', onConnectionLost);
+    client.on('disconnect,', disconnectOnClick);
 }
 
 function onConnect() {
@@ -32,7 +34,6 @@ function onConnect() {
     document.getElementById("output").innerHTML += "<span> Subscribing the Topic: " + topic + " ... </span><br>";
 
     client.subscribe(topic);
-    console.log(client)
 }
 
 function onConnectError(err) {
@@ -40,21 +41,31 @@ function onConnectError(err) {
 }
 
 function onConnectionLost(responseObject) {
-    document.getElementById("output").innerHTML += "<span> ERROR: Connection Lost ... </span><br>";
-    if (responseObject.errorMessage) {
-        document.getElementById("output").innerHTML += "<span> ERROR:" + responseObject.errorMessage + "</span><br>";
+    if (responseObject) {
+        document.getElementById("output").innerHTML += "<span> ERROR: Connection Lost ... </span><br>";
+        if (responseObject.errorMessage) {
+          document.getElementById("output").innerHTML += "<span> ERROR:" + responseObject.errorMessage + "</span><br>";
+        }
+      } else {
+        // Handle the case where responseObject is undefined
+        console.log("Connection lost, but response object is undefined.");
+      }
     }
-}
 
-function onMessageArrived(message) {
-    console.log("onMessageArrived called: " + message.payloadString);
-    document.getElementById("output").innerHTML += "<span> Topic: " + message.destinationName + "| Message: " + message.payloadString + "</span><br>";
-}
 
 function disconnectOnClick() {
-    if (client && client.isConnected()) {
-        client.disconnect();
+
+    const topic = document.getElementById("topic_s").value;
+
+    if (client && client.connected) {
+
+        client.unsubscribe(topic);
+        document.getElementById("output").innerHTML += "<span> Unsubscribe succesfully</span><br>";
+        console.log(client)
+
+        client.end();
         document.getElementById("output").innerHTML += "<span> Disconnected successfully</span><br>";
+
     } else {
         document.getElementById("output").innerHTML += "<span> Client is not connected</span><br>";
     }
