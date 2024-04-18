@@ -8,9 +8,10 @@ function connectOnClick() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    if (!host.startsWith('wss://') && (port== 8081 ||port==8091)) {
+    if (!host.startsWith('wss://') && (port== 8081 ||port==8091) && host=='test.mosquitto.org') {
         host = 'wss://' + host;
     }
+    
 
     client = mqtt.connect(`${host}:${port}`, {
         clientId: clientId,
